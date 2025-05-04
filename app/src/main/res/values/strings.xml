@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Cash Flow - Pos2025</string>
+    <string name="value_local_money">US$ </string>
+    <string name="credit">Credit</string>
+    <string name="debit">Debit</string>
+    <string name="type">Type:</string>
+    <string name="detail">Detail</string>
+    <string name="salary">Salary</string>
+    <string name="extras">Extras</string>
+    <string name="feeding">Feeding</string>
+    <string name="transportation">Tranportation</string>
+    <string name="health">Health</string>
+    <string name="housing_expenses">Housing expenses</string>
+    <string name="submit">Submit</string>
+    <string name="check_entries">Check entries</string>
+    <string name="balance">Balance</string>
+    <string name="entry_date">Entry date</string>
+    <string name="fill_all_fields">Fill all fields</string>
+    <string name="insert_sucessful">Data inserted with success!</string>
+    <string name="balance_msg">Actual balance is US$%s</string>
+    <string name="change_theme">Change theme</string>
+</resources>

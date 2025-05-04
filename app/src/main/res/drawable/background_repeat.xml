@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--> ABAIXO VEIO DO FATEC NOTIFICA /-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/shape_color">
+        <shape android:shape="rectangle" >
+            <solid android:color="@color/white" />
+        </shape>
+    </item>
+    <item android:id="@+id/shape_pattern"
+        android:bottom="0px"
+        android:left="0px"
+        android:right="0px"
+        android:top="0px">
+        <bitmap
+            android:antialias="true"
+            android:src="@drawable/background_pattern_finance"
+            android:tileMode="repeat" />
+    </item>
+</layer-list>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--> ESTE VEIO DO STACKOVERFLOW -->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/background_pattern_finance"
+    android:tileMode="repeat"
+    android:antialias="true"
+    />

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Fluxo de Caixa - Pos2025</string>
+    <string name="value_local_money">R$ </string>
+    <string name="credit">Crédito</string>
+    <string name="debit">Débito</string>
+    <string name="type">Tipo:</string>
+    <string name="detail">Detalhe</string>
+    <string name="salary">Salário</string>
+    <string name="extras">Extras</string>
+    <string name="feeding">Alimentação</string>
+    <string name="transportation">Transporte</string>
+    <string name="health">Saúde</string>
+    <string name="housing_expenses">Moradia</string>
+    <string name="submit">Salvar</string>
+    <string name="check_entries">Ver lançamentos</string>
+    <string name="balance">Saldo</string>
+    <string name="entry_date">Data do lançamento</string>
+    <string name="fill_all_fields">Preencha todos os campos</string>
+    <string name="insert_sucessful">Inserido com sucesso!</string>
+    <string name="balance_msg">O saldo atual é R$%s</string>
+    <string name="change_theme">Mudar tema</string>
+</resources>

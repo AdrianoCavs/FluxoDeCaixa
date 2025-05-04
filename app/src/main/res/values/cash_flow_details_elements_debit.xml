@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="details_elements_debit">
+        <item>@string/feeding</item>
+        <item>@string/transportation</item>
+        <item>@string/health</item>
+        <item>@string/housing_expenses</item>
+    </string-array>
+</resources>

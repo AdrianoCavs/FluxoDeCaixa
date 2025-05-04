@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="details_elements_credit">
+        <item>@string/salary</item>
+        <item>@string/extras</item>
+    </string-array>
+</resources>
