@@ -1,12 +1,15 @@
 package com.cavstecnologia.fluxodecaixa_pos2025.activity
 
 import android.app.DatePickerDialog
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
+import android.nfc.Tag
 import android.os.Bundle
 import android.text.method.DigitsKeyListener
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.Toast
@@ -52,6 +55,8 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        initData();
 
         db = DatabaseHandler(this);
 
@@ -150,12 +155,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btBalance.setOnClickListener{
-            //emptyAllFields();
+            emptyAllFields();
             val balance : Double = db.getCashFlowBalance();
 
             val balanceString : String = util.moneyDecimalFormatter(balance);
-
-            //Toast.makeText(this, "O saldo atual é: R$" + balance, Toast.LENGTH_LONG).show();
 
             val builder : AlertDialog.Builder = AlertDialog.Builder(this);
             builder.setMessage(getString(R.string.balance_msg, balanceString)).setTitle(R.string.balance).setNeutralButton("OK"){_, _ ->};
@@ -163,13 +166,22 @@ class MainActivity : AppCompatActivity() {
             dialog.show();
         }
 
-
     }//end of onCreate
+
+    private fun initData() {
+        if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
+            TODO("Veio da tela Lista pelo botão editar ->Implementar o preenchimento dos campos por chamada ao banco e colocar o botão salvar como update")
+        }
+    }
 
     private fun emptyAllFields() {
         binding.etEntryDate.setText("");
+        binding.etEntryDate.isEnabled = false
         binding.etValue.setText("");
+        binding.etValue.isEnabled = false;
         binding.actvDetailExposedDropdown.setText("");
+        binding.actvDetailExposedDropdown.isEnabled = false;
+        binding.btSubmit.isEnabled = false;
         binding.rgInputType.clearCheck();
         binding.tvInputType.requestFocus();
     }
@@ -180,7 +192,8 @@ class MainActivity : AppCompatActivity() {
             binding.etValue.text!!.isEmpty() ||
             binding.etEntryDate.text!!.isEmpty()){
             return false;
-        }else return true;
+        }
+        else return true;
     }
 
     private fun showDatePickerDialog() {

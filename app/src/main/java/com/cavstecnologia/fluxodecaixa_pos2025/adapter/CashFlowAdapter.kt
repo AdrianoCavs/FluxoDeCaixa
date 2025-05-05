@@ -40,6 +40,7 @@ class CashFlowAdapter(var conext : Context, var cursor: Cursor) : BaseAdapter() 
         val tvDetails = listElement.findViewById<TextView>(R.id.tv_details);
         val tvValue = listElement.findViewById<TextView>(R.id.tv_value);
         val tvLocalMoney = listElement.findViewById<TextView>(R.id.tv_local_money);
+        val tvIdCashFlowEntry = listElement.findViewById<TextView>(R.id.tv_id_cash_flow_entry);
 
         cursor.moveToPosition(position);
 
@@ -48,12 +49,14 @@ class CashFlowAdapter(var conext : Context, var cursor: Cursor) : BaseAdapter() 
         val date = cursor.getString(4);
         val type = cursor.getString(1);
         val detail = cursor.getString(2);
-        val value = util.moneyDecimalFormatter(cursor.getDouble(3));
+        val value : String = util.moneyDecimalFormatter(cursor.getDouble(3));
+        val id = cursor.getInt(0);
 
         tvDate.text = date;
         tvType.text = type;
         tvDetails.text = detail;
         tvValue.text = value;
+        tvIdCashFlowEntry.text = id.toString();
 
         if (type.substring(0, 1) == "C"){
             tvValue.setTextColor(Color.GREEN);
@@ -63,7 +66,6 @@ class CashFlowAdapter(var conext : Context, var cursor: Cursor) : BaseAdapter() 
             tvValue.setTextColor(Color.RED);
             tvLocalMoney.setTextColor(Color.RED);
         }
-
 
         return listElement;
     }

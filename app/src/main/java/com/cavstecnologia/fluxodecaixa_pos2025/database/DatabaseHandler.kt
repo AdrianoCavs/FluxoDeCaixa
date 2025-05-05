@@ -27,14 +27,27 @@ class DatabaseHandler (context : Context) : SQLiteOpenHelper(context, DATABASE_N
 
     fun getCashFlowBalance() : Double {
         val db = this.readableDatabase;
-        val cursor : Cursor = db.rawQuery("SELECT (SELECT SUM(value) FROM ${TABLE_NAME} WHERE type LIKE 'C%')-(SELECT SUM(value) FROM ${TABLE_NAME} WHERE type LIKE 'D%') AS BALANCE;", null);
+        //val cursor : Cursor = db.rawQuery("SELECT (SELECT SUM(value) FROM ${TABLE_NAME} WHERE type LIKE 'C%')-(SELECT SUM(value) FROM ${TABLE_NAME} WHERE type LIKE 'D%') AS BALANCE;", null);
+
+        var cursor : Cursor = db.rawQuery("SELECT SUM(value) FROM cash_flow WHERE type LIKE 'C%';", null);
         cursor.moveToFirst();
+        val credit = cursor.getDouble(0);
+        Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+        Log.d(TAG, "Valor lido do cursor CREDITO = " + cursor.getDouble(0));
+
+        cursor =  db.rawQuery("SELECT SUM(value) FROM cash_flow WHERE type LIKE 'D%';", null)
+        cursor.moveToFirst();
+        val debit = cursor.getDouble(0);
+
+        Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
+        Log.d(TAG, "Valor lido do cursor DEBITO = " + cursor.getDouble(0));
+
+        val balance = credit - debit;
 
         //Imprimindo o resultado do cursor resultado do select para o logcat
-        Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
 
-        val balance : Double = cursor.getDouble(0);
         cursor.close();
+        Log.d(TAG, "Valor na var balance = " + balance);
         return balance;
     }
     override fun onCreate(db: SQLiteDatabase?) {
