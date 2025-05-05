@@ -5,26 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_list_element_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_value"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_date"
-        app:srcCompat="@drawable/baseline_attach_money_48" />
-
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/iv_list_element_icon"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="03/05/2025" />
 
@@ -45,20 +35,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/bt_edit_list_element"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/bt_edit_list_element"
-        app:srcCompat="@android:drawable/ic_menu_delete"
-        android:visibility="invisible"/>
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
     <ImageButton
         android:id="@+id/bt_edit_list_element"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_list_element_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_local_money"
         app:layout_constraintEnd_toStartOf="@+id/bt_delete_list_element"
-        app:layout_constraintTop_toTopOf="@+id/iv_list_element_icon"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_menu_edit"
-        android:visibility="invisible"/>
+        app:layout_constraintTop_toTopOf="@+id/tv_date"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <TextView
         android:id="@+id/tv_type"
@@ -98,8 +85,8 @@
         android:layout_height="wrap_content"
         android:text="ID"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_list_element_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_local_money"
         app:layout_constraintEnd_toStartOf="@+id/bt_edit_list_element"
         app:layout_constraintStart_toEndOf="@+id/tv_details"
-        app:layout_constraintTop_toTopOf="@+id/iv_list_element_icon" />
+        app:layout_constraintTop_toTopOf="@+id/tv_date" />
 </androidx.constraintlayout.widget.ConstraintLayout>

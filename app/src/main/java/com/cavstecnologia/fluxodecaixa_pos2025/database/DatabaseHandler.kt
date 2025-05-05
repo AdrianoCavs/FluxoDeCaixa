@@ -89,5 +89,25 @@ class DatabaseHandler (context : Context) : SQLiteOpenHelper(context, DATABASE_N
         Log.d(TAG, DatabaseUtils.dumpCursorToString(records));
         return records;
     }
+
+    fun search(id: Int) : CashFlowEntry?{
+        val db = this.readableDatabase;
+        //val cursor = db.query(TABLE_NAME, null, "_id=?", arrayOf(id.toString()), null, null, null);
+        val cursor = db.rawQuery("SELECT * FROM cash_flow WHERE _id = ${id};", null)
+
+        if (cursor.moveToNext()){
+            val cashFlowEntry = CashFlowEntry (id, cursor.getString(1), cursor.getString(2), cursor.getDouble(3), cursor.getString(4));
+            cursor.close();
+            return cashFlowEntry;
+        }
+        else return null;
+    }
+
+    fun delete(id : Int){
+        val db = this.writableDatabase;
+        //val cursor = db.rawQuery("DELETE FROM cash_flow WHERE _id = ${id};", null);
+        //cursor.close();
+        db.delete(TABLE_NAME, "_id=${id}", null);
+    }
 }
 

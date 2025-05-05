@@ -19,4 +19,9 @@
     <string name="insert_sucessful">Data inserted with success!</string>
     <string name="balance_msg">Actual balance is US$%s</string>
     <string name="change_theme">Change theme</string>
+    <string name="update_sucessful">Record updated with success!</string>
+    <string name="are_you_sure_delete">Are you sure to delete this record?</string>
+    <string name="confirmation">CONFIRMATION</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

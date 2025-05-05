@@ -20,4 +20,9 @@
     <string name="insert_sucessful">Inserido com sucesso!</string>
     <string name="balance_msg">O saldo atual é R$%s</string>
     <string name="change_theme">Mudar tema</string>
+    <string name="update_sucessful">Registro atualizado com sucesso!</string>
+    <string name="are_you_sure_delete">Você tem certeza que deseja apagar este registro?</string>
+    <string name="confirmation">CONFIRMAÇÃO</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

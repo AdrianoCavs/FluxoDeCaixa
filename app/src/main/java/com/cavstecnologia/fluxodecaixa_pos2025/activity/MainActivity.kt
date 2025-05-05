@@ -1,15 +1,12 @@
 package com.cavstecnologia.fluxodecaixa_pos2025.activity
 
 import android.app.DatePickerDialog
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.icu.util.Calendar
-import android.nfc.Tag
 import android.os.Bundle
 import android.text.method.DigitsKeyListener
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.RadioButton
 import android.widget.Toast
@@ -56,9 +53,8 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        //initData();
-
         db = DatabaseHandler(this);
+        initData();
 
         sharedPreferences = getSharedPreferences("properties", Context.MODE_PRIVATE);
         dark_mode = sharedPreferences.getBoolean("dark_mode", false);
@@ -129,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btSubmit.setOnClickListener{
+
             if (checkEmptyFields()){
                 val radioButtonId = binding.rgInputType.checkedRadioButtonId;
                 val selectedRadioButton : RadioButton = findViewById<RadioButton>(radioButtonId);
@@ -140,9 +137,18 @@ class MainActivity : AppCompatActivity() {
                     binding.actvDetailExposedDropdown.text.toString(),
                     value.toDouble(),
                     binding.etEntryDate.text.toString());
-                db.insert(cashFlowEntry);
-                Toast.makeText(this, R.string.insert_sucessful, Toast.LENGTH_LONG).show();
-                emptyAllFields();
+                if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
+                    cashFlowEntry._id = intent.getIntExtra("idCashFlowEntry", 0);
+                    db.update(cashFlowEntry);
+                    Toast.makeText(this, R.string.update_sucessful, Toast.LENGTH_LONG).show();
+                    intent.putExtra("idCashFlowEntry", 0);
+                    emptyAndDisableAllFields();
+                }
+                else{
+                    db.insert(cashFlowEntry);
+                    Toast.makeText(this, R.string.insert_sucessful, Toast.LENGTH_LONG).show();
+                    emptyAndDisableAllFields();
+                }
             }
             else{
                 Toast.makeText(this, R.string.fill_all_fields, Toast.LENGTH_LONG).show();
@@ -155,7 +161,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btBalance.setOnClickListener{
-            emptyAllFields();
+            emptyAndDisableAllFields();
             val balance : Double = db.getCashFlowBalance();
 
             val balanceString : String = util.moneyDecimalFormatter(balance);
@@ -168,13 +174,24 @@ class MainActivity : AppCompatActivity() {
 
     }//end of onCreate
 
-//    private fun initData() {
-//        if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
-//            ODO("Veio da tela Lista pelo botão editar ->Implementar o preenchimento dos campos por chamada ao banco e colocar o botão salvar como update")
-//        }
-//    }
+    private fun initData() {
+        if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
+            val id : Int = intent.getIntExtra("idCashFlowEntry", 0);
+            val cashFlowEntry = db.search(id);
 
-    private fun emptyAllFields() {
+            if (cashFlowEntry != null) {
+                binding.etEntryDate.setText(cashFlowEntry.date);
+                binding.etValue.setText(util.moneyDecimalFormatter(cashFlowEntry.value));
+                binding.actvDetailExposedDropdown.setText(cashFlowEntry.detail);
+
+                if (cashFlowEntry.type.substring(0, 1) == "C") binding.rgInputType.check(binding.rbOptionCredit.id);
+                if (cashFlowEntry.type.substring(0, 1) == "D") binding.rgInputType.check(binding.rbOptionDebit.id);
+                enableAllFields();
+            }
+        }
+    }
+
+    private fun emptyAndDisableAllFields() {
         binding.etEntryDate.setText("");
         binding.etEntryDate.isEnabled = false
         binding.etValue.setText("");
@@ -185,6 +202,14 @@ class MainActivity : AppCompatActivity() {
         binding.rgInputType.clearCheck();
         binding.tvInputType.requestFocus();
     }
+
+    private fun enableAllFields(){
+        binding.etEntryDate.isEnabled = true
+        binding.etValue.isEnabled = true;
+        binding.actvDetailExposedDropdown.isEnabled = true;
+        binding.btSubmit.isEnabled = true;
+    }
+
 
     private fun checkEmptyFields(): Boolean {
         if (binding.rgInputType.checkedRadioButtonId == -1 ||

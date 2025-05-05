@@ -1,21 +1,23 @@
 package com.cavstecnologia.fluxodecaixa_pos2025.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageButton
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.toColor
+import androidx.appcompat.app.AlertDialog
 import com.cavstecnologia.fluxodecaixa_pos2025.R
 import com.cavstecnologia.fluxodecaixa_pos2025.entity.CashFlowEntry
 import com.cavstecnologia.fluxodecaixa_pos2025.utils.Utils
-import androidx.core.graphics.toColorInt
+import com.cavstecnologia.fluxodecaixa_pos2025.activity.MainActivity
+import com.cavstecnologia.fluxodecaixa_pos2025.database.DatabaseHandler
 
-class CashFlowAdapter(var conext : Context, var cursor: Cursor) : BaseAdapter() {
+class CashFlowAdapter(var context : Context, var cursor: Cursor) : BaseAdapter() {
     override fun getCount(): Int {
         return cursor.count;
     }
@@ -32,7 +34,7 @@ class CashFlowAdapter(var conext : Context, var cursor: Cursor) : BaseAdapter() 
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val inflater = conext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater;
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater;
         val listElement = inflater.inflate(R.layout.list_element, null);
 
         val tvDate = listElement.findViewById<TextView>(R.id.tv_date);
@@ -40,7 +42,10 @@ class CashFlowAdapter(var conext : Context, var cursor: Cursor) : BaseAdapter() 
         val tvDetails = listElement.findViewById<TextView>(R.id.tv_details);
         val tvValue = listElement.findViewById<TextView>(R.id.tv_value);
         val tvLocalMoney = listElement.findViewById<TextView>(R.id.tv_local_money);
+
         val tvIdCashFlowEntry = listElement.findViewById<TextView>(R.id.tv_id_cash_flow_entry);
+        val btEditListElement = listElement.findViewById<ImageButton>(R.id.bt_edit_list_element);
+        val btDeleteListElement = listElement.findViewById<ImageButton>(R.id.bt_delete_list_element);
 
         cursor.moveToPosition(position);
 
@@ -67,6 +72,28 @@ class CashFlowAdapter(var conext : Context, var cursor: Cursor) : BaseAdapter() 
             tvLocalMoney.setTextColor(Color.RED);
         }
 
+        btEditListElement.setOnClickListener{
+            val idCashFlowEntry : Int = tvIdCashFlowEntry.text.toString().toInt();
+            val intent = Intent(context, MainActivity::class.java);
+            intent.putExtra("idCashFlowEntry", idCashFlowEntry);
+            context.startActivity(intent);
+        }
+        btDeleteListElement.setOnClickListener {
+            val builder : AlertDialog.Builder = AlertDialog.Builder(context);
+            builder.setMessage(R.string.are_you_sure_delete)
+                .setTitle(R.string.confirmation)
+                .setPositiveButton(R.string.yes){dialog, id ->
+                    val db :DatabaseHandler = DatabaseHandler(context);
+                    db.delete(tvIdCashFlowEntry.text.toString().toInt());
+
+                    //os passos abaixos são para atualizar o layout em tempo real excluindo o item que foi deletado do banco
+                    this.cursor = db.list();
+                    notifyDataSetChanged();
+                }
+                .setNegativeButton(R.string.no){dialog,id->};
+            val dialog : AlertDialog = builder.create();
+            dialog.show();
+        }
         return listElement;
     }
 
