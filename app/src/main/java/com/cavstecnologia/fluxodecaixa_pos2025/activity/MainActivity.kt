@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        initData();
+        //initData();
 
         db = DatabaseHandler(this);
 
@@ -168,11 +168,11 @@ class MainActivity : AppCompatActivity() {
 
     }//end of onCreate
 
-    private fun initData() {
-        if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
-            TODO("Veio da tela Lista pelo botão editar ->Implementar o preenchimento dos campos por chamada ao banco e colocar o botão salvar como update")
-        }
-    }
+//    private fun initData() {
+//        if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
+//            TODO("Veio da tela Lista pelo botão editar ->Implementar o preenchimento dos campos por chamada ao banco e colocar o botão salvar como update")
+//        }
+//    }
 
     private fun emptyAllFields() {
         binding.etEntryDate.setText("");
