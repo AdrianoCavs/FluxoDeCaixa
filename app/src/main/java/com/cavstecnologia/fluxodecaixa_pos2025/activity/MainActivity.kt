@@ -81,34 +81,10 @@ class MainActivity : AppCompatActivity() {
         binding.etValue.keyListener = DigitsKeyListener.getInstance("0123456789${separator}");
 
         binding.rbOptionCredit.setOnClickListener {
-            //Toast.makeText(this, "ID do radio button: " + binding.rbOptionCredit.id, Toast.LENGTH_LONG).show();
-            binding.actvDetailExposedDropdown.isEnabled = true;
-            binding.actvDetailExposedDropdown.setText("");
-            detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_credit, android.R.layout.simple_spinner_dropdown_item);
-            binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
-
-            if (firstRadioButtonClick){
-                firstRadioButtonClick = false
-            }
-            else{
-                //binding.etValue.requestFocus();
-                binding.actvDetailExposedDropdown.requestFocus();
-            }
+            rbOptionCreditOnClick();
         }
         binding.rbOptionDebit.setOnClickListener {
-            //Toast.makeText(this, "ID do radio button: " + binding.rbOptionDebit.id, Toast.LENGTH_LONG).show();
-            binding.actvDetailExposedDropdown.isEnabled = true;
-            binding.actvDetailExposedDropdown.setText("");
-            detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_debit, android.R.layout.simple_spinner_dropdown_item);
-            binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
-
-            if (firstRadioButtonClick){
-                firstRadioButtonClick = false
-                //binding.etValue.requestFocus();
-            }
-            else{
-                binding.actvDetailExposedDropdown.requestFocus();
-            }
+            rbOptionDebitOnClick()
         }
 
         binding.actvDetailExposedDropdown.setOnItemClickListener { parent, view, position, id ->
@@ -125,34 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btSubmit.setOnClickListener{
-
-            if (checkEmptyFields()){
-                val radioButtonId = binding.rgInputType.checkedRadioButtonId;
-                val selectedRadioButton : RadioButton = findViewById<RadioButton>(radioButtonId);
-                var value : String = binding.etValue.text.toString();
-                value = value.replace(",", ".");
-                val cashFlowEntry : CashFlowEntry = CashFlowEntry(
-                    0,
-                    selectedRadioButton.text.toString(),
-                    binding.actvDetailExposedDropdown.text.toString(),
-                    value.toDouble(),
-                    binding.etEntryDate.text.toString());
-                if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
-                    cashFlowEntry._id = intent.getIntExtra("idCashFlowEntry", 0);
-                    db.update(cashFlowEntry);
-                    Toast.makeText(this, R.string.update_sucessful, Toast.LENGTH_LONG).show();
-                    intent.putExtra("idCashFlowEntry", 0);
-                    emptyAndDisableAllFields();
-                }
-                else{
-                    db.insert(cashFlowEntry);
-                    Toast.makeText(this, R.string.insert_sucessful, Toast.LENGTH_LONG).show();
-                    emptyAndDisableAllFields();
-                }
-            }
-            else{
-                Toast.makeText(this, R.string.fill_all_fields, Toast.LENGTH_LONG).show();
-            }
+            btSubmitOnClick();
         }
 
         binding.btCheckEntries.setOnClickListener{
@@ -161,18 +110,82 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btBalance.setOnClickListener{
-            emptyAndDisableAllFields();
-            val balance : Double = db.getCashFlowBalance();
-
-            val balanceString : String = util.moneyDecimalFormatter(balance);
-
-            val builder : AlertDialog.Builder = AlertDialog.Builder(this);
-            builder.setMessage(getString(R.string.balance_msg, balanceString)).setTitle(R.string.balance).setNeutralButton("OK"){_, _ ->};
-            val dialog : AlertDialog = builder.create();
-            dialog.show();
+            btBalanceOnClick();
         }
 
     }//end of onCreate
+
+    private fun btBalanceOnClick() {
+        emptyAndDisableAllFields();
+        val balance : Double = db.getCashFlowBalance();
+
+        val balanceString : String = util.moneyDecimalFormatter(balance);
+
+        val builder : AlertDialog.Builder = AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.balance_msg, balanceString)).setTitle(R.string.balance).setNeutralButton("OK"){_, _ ->};
+        val dialog : AlertDialog = builder.create();
+        dialog.show();
+    }
+
+    private fun btSubmitOnClick() {
+        if (checkEmptyFields()){
+            val radioButtonId = binding.rgInputType.checkedRadioButtonId;
+            val selectedRadioButton : RadioButton = findViewById<RadioButton>(radioButtonId);
+            var value : String = binding.etValue.text.toString();
+            value = value.replace(",", ".");
+            val cashFlowEntry : CashFlowEntry = CashFlowEntry(
+                0,
+                selectedRadioButton.text.toString(),
+                binding.actvDetailExposedDropdown.text.toString(),
+                value.toDouble(),
+                binding.etEntryDate.text.toString());
+            if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
+                cashFlowEntry._id = intent.getIntExtra("idCashFlowEntry", 0);
+                db.update(cashFlowEntry);
+                Toast.makeText(this, R.string.update_sucessful, Toast.LENGTH_LONG).show();
+                intent.putExtra("idCashFlowEntry", 0);
+                emptyAndDisableAllFields();
+            }
+            else{
+                db.insert(cashFlowEntry);
+                Toast.makeText(this, R.string.insert_sucessful, Toast.LENGTH_LONG).show();
+                emptyAndDisableAllFields();
+            }
+        }
+        else{
+            Toast.makeText(this, R.string.fill_all_fields, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private fun rbOptionDebitOnClick() {
+        binding.actvDetailExposedDropdown.isEnabled = true;
+        binding.actvDetailExposedDropdown.setText("");
+        detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_debit, android.R.layout.simple_spinner_dropdown_item);
+        binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
+
+        if (firstRadioButtonClick){
+            firstRadioButtonClick = false
+            //binding.etValue.requestFocus();
+        }
+        else{
+            binding.actvDetailExposedDropdown.requestFocus();
+        }
+    }
+
+    private fun rbOptionCreditOnClick() {
+        binding.actvDetailExposedDropdown.isEnabled = true;
+        binding.actvDetailExposedDropdown.setText("");
+        detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_credit, android.R.layout.simple_spinner_dropdown_item);
+        binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
+
+        if (firstRadioButtonClick){
+            firstRadioButtonClick = false
+        }
+        else{
+            //binding.etValue.requestFocus();
+            binding.actvDetailExposedDropdown.requestFocus();
+        }
+    }
 
     private fun initData() {
         if (intent.getIntExtra("idCashFlowEntry", 0) != 0){
@@ -184,8 +197,14 @@ class MainActivity : AppCompatActivity() {
                 binding.etValue.setText(util.moneyDecimalFormatter(cashFlowEntry.value));
                 binding.actvDetailExposedDropdown.setText(cashFlowEntry.detail);
 
-                if (cashFlowEntry.type.substring(0, 1) == "C") binding.rgInputType.check(binding.rbOptionCredit.id);
-                if (cashFlowEntry.type.substring(0, 1) == "D") binding.rgInputType.check(binding.rbOptionDebit.id);
+                if (cashFlowEntry.type.substring(0, 1) == "C"){
+                    binding.rgInputType.check(binding.rbOptionCredit.id);
+                    rbOptionCreditOnClick();
+                }
+                if (cashFlowEntry.type.substring(0, 1) == "D") {
+                    binding.rgInputType.check(binding.rbOptionDebit.id);
+                    rbOptionDebitOnClick();
+                }
                 enableAllFields();
             }
         }
