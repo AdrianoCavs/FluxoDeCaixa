@@ -8,7 +8,7 @@ class Utils {
         val separator : String = DecimalFormatSymbols.getInstance().decimalSeparator.toString();
         var formattedValue : String;
 
-        val df : DecimalFormat = DecimalFormat("#.00");
+        val df = DecimalFormat("#.00");
 
         if (value < 1.0){
             formattedValue = String.format("%.2f", value);

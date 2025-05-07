@@ -1,6 +1,5 @@
 package com.cavstecnologia.fluxodecaixa_pos2025.activity
 
-import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -11,8 +10,6 @@ import com.cavstecnologia.fluxodecaixa_pos2025.R
 import com.cavstecnologia.fluxodecaixa_pos2025.adapter.CashFlowAdapter
 import com.cavstecnologia.fluxodecaixa_pos2025.database.DatabaseHandler
 import com.cavstecnologia.fluxodecaixa_pos2025.databinding.ActivityListEntriesBinding
-import com.cavstecnologia.fluxodecaixa_pos2025.databinding.ListElementBinding
-import com.cavstecnologia.fluxodecaixa_pos2025.entity.CashFlowEntry
 
 class ListEntriesActivity : AppCompatActivity() {
 

@@ -17,7 +17,7 @@ import com.cavstecnologia.fluxodecaixa_pos2025.utils.Utils
 import com.cavstecnologia.fluxodecaixa_pos2025.activity.MainActivity
 import com.cavstecnologia.fluxodecaixa_pos2025.database.DatabaseHandler
 
-class CashFlowAdapter(var context : Context, var cursor: Cursor) : BaseAdapter() {
+class CashFlowAdapter(private var context : Context, private var cursor: Cursor) : BaseAdapter() {
     override fun getCount(): Int {
         return cursor.count;
     }
@@ -49,7 +49,7 @@ class CashFlowAdapter(var context : Context, var cursor: Cursor) : BaseAdapter()
 
         cursor.moveToPosition(position);
 
-        val util : Utils = Utils();
+        val util = Utils();
 
         val date = cursor.getString(4);
         val type = cursor.getString(1);
@@ -83,7 +83,7 @@ class CashFlowAdapter(var context : Context, var cursor: Cursor) : BaseAdapter()
             builder.setMessage(R.string.are_you_sure_delete)
                 .setTitle(R.string.confirmation)
                 .setPositiveButton(R.string.yes){dialog, id ->
-                    val db :DatabaseHandler = DatabaseHandler(context);
+                    val db = DatabaseHandler(context);
                     db.delete(tvIdCashFlowEntry.text.toString().toInt());
 
                     //os passos abaixos são para atualizar o layout em tempo real excluindo o item que foi deletado do banco

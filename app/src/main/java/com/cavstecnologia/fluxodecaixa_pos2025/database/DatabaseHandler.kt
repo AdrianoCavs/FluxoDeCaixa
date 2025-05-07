@@ -8,19 +8,13 @@ import android.database.DatabaseUtils
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import androidx.core.database.getDoubleOrNull
 import com.cavstecnologia.fluxodecaixa_pos2025.entity.CashFlowEntry
 
 class DatabaseHandler (context : Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        public const val DATABASE_NAME = "dbfile.sqlite";
-        public const val DATABASE_VERSION = 1;
-        public const val TABLE_NAME = "cash_flow";
-        public const val COLUMN_TYPE = 1;
-        public const val COLUMN_DETAIL = 2;
-        public const val COLUMN_VALUE = 3;
-        public const val COLUMN_DATE = 4;
-
+        const val DATABASE_NAME = "dbfile.sqlite";
+        const val DATABASE_VERSION = 1;
+        const val TABLE_NAME = "cash_flow";
     }
 
     //SELECT (SELECT SUM(value) FROM cash_flow WHERE type LIKE 'C%')-(SELECT SUM(value) FROM cash_flow WHERE type LIKE 'D%');
@@ -39,23 +33,22 @@ class DatabaseHandler (context : Context) : SQLiteOpenHelper(context, DATABASE_N
         cursor.moveToFirst();
         val debit = cursor.getDouble(0);
 
+        //Imprimindo o resultado do cursor resultado do select para o logcat
         Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
         Log.d(TAG, "Valor lido do cursor DEBITO = " + cursor.getDouble(0));
 
         val balance = credit - debit;
 
-        //Imprimindo o resultado do cursor resultado do select para o logcat
-
         cursor.close();
-        Log.d(TAG, "Valor na var balance = " + balance);
+        Log.d(TAG, "Valor na var balance = $balance");
         return balance;
     }
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (_id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, detail TEXT, value REAL, date TEXT)");
+        db?.execSQL("CREATE TABLE IF NOT EXISTS $TABLE_NAME (_id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, detail TEXT, value REAL, date TEXT)");
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL("DROP TABLE IF EXISTS ${TABLE_NAME}")
+        db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME")
         onCreate(db);
     }
 
