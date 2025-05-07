@@ -78,7 +78,7 @@ class DatabaseHandler (context : Context) : SQLiteOpenHelper(context, DATABASE_N
 
     fun list() : Cursor{
         val db = this.readableDatabase;
-        val records = db.query(TABLE_NAME, null, null, null, null, null, null);
+        val records = db.query(TABLE_NAME, null, null, null, null, null, "date DESC");
         Log.d(TAG, DatabaseUtils.dumpCursorToString(records));
         return records;
     }
