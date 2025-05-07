@@ -23,8 +23,6 @@ import com.cavstecnologia.fluxodecaixa_pos2025.databinding.ActivityMainBinding
 import com.cavstecnologia.fluxodecaixa_pos2025.entity.CashFlowEntry
 import com.cavstecnologia.fluxodecaixa_pos2025.utils.Utils
 import java.text.DecimalFormatSymbols
-import java.util.Locale
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,12 +30,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding;
     private lateinit var detailsItemAdapter: ArrayAdapter<CharSequence>;
     private val calendar = Calendar.getInstance();
-    private val locale = Locale.getDefault();
-    private var firstRadioButtonClick = true;
     private val separator : String = DecimalFormatSymbols.getInstance().decimalSeparator.toString();
     private val util = Utils();
     private lateinit var sharedPreferences: SharedPreferences;
-    private var dark_mode = false;
+    private var darkMode = false;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         initData();
 
         sharedPreferences = getSharedPreferences("properties", Context.MODE_PRIVATE);
-        dark_mode = sharedPreferences.getBoolean("dark_mode", false);
-        when (dark_mode){
+        darkMode = sharedPreferences.getBoolean("dark_mode", false);
+        when (darkMode){
             true -> {AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)};
             false -> {AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)};
         }
@@ -130,10 +126,10 @@ class MainActivity : AppCompatActivity() {
     private fun btSubmitOnClick() {
         if (checkEmptyFields()){
             val radioButtonId = binding.rgInputType.checkedRadioButtonId;
-            val selectedRadioButton : RadioButton = findViewById<RadioButton>(radioButtonId);
+            val selectedRadioButton : RadioButton = findViewById(radioButtonId);
             var value : String = binding.etValue.text.toString();
             value = value.replace(",", ".");
-            val cashFlowEntry : CashFlowEntry = CashFlowEntry(
+            val cashFlowEntry = CashFlowEntry(
                 0,
                 selectedRadioButton.text.toString(),
                 binding.actvDetailExposedDropdown.text.toString(),
@@ -162,14 +158,8 @@ class MainActivity : AppCompatActivity() {
         binding.actvDetailExposedDropdown.setText("");
         detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_debit, android.R.layout.simple_spinner_dropdown_item);
         binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
-
-        if (firstRadioButtonClick){
-            firstRadioButtonClick = false
-            //binding.etValue.requestFocus();
-        }
-        else{
-            binding.actvDetailExposedDropdown.requestFocus();
-        }
+        binding.actvDetailExposedDropdown.requestFocus();
+        binding.btSubmit.isEnabled = false;
     }
 
     private fun rbOptionCreditOnClick() {
@@ -177,14 +167,8 @@ class MainActivity : AppCompatActivity() {
         binding.actvDetailExposedDropdown.setText("");
         detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_credit, android.R.layout.simple_spinner_dropdown_item);
         binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
-
-        if (firstRadioButtonClick){
-            firstRadioButtonClick = false
-        }
-        else{
-            //binding.etValue.requestFocus();
-            binding.actvDetailExposedDropdown.requestFocus();
-        }
+        binding.actvDetailExposedDropdown.requestFocus();
+        binding.btSubmit.isEnabled = false;
     }
 
     private fun initData() {
@@ -195,15 +179,21 @@ class MainActivity : AppCompatActivity() {
             if (cashFlowEntry != null) {
                 binding.etEntryDate.setText(cashFlowEntry.date);
                 binding.etValue.setText(util.moneyDecimalFormatter(cashFlowEntry.value));
-                binding.actvDetailExposedDropdown.setText(cashFlowEntry.detail);
+
 
                 if (cashFlowEntry.type.substring(0, 1) == "C"){
                     binding.rgInputType.check(binding.rbOptionCredit.id);
                     rbOptionCreditOnClick();
+                    binding.actvDetailExposedDropdown.setText(cashFlowEntry.detail);
+                    detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_credit, android.R.layout.simple_spinner_dropdown_item);
+                    binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
                 }
                 if (cashFlowEntry.type.substring(0, 1) == "D") {
                     binding.rgInputType.check(binding.rbOptionDebit.id);
                     rbOptionDebitOnClick();
+                    binding.actvDetailExposedDropdown.setText(cashFlowEntry.detail);
+                    detailsItemAdapter = ArrayAdapter.createFromResource(this, R.array.details_elements_debit, android.R.layout.simple_spinner_dropdown_item);
+                    binding.actvDetailExposedDropdown.setAdapter(detailsItemAdapter);
                 }
                 enableAllFields();
             }

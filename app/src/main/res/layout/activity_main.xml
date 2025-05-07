@@ -52,11 +52,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_spinner_detail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/details_elements_credit"
             android:hint="@string/detail"
             android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="@+id/rg_input_type"
             app:layout_constraintTop_toBottomOf="@+id/rg_input_type">
@@ -72,8 +74,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilValue"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintStart_toStartOf="@+id/til_spinner_detail"
             app:layout_constraintTop_toBottomOf="@+id/til_spinner_detail">
 
@@ -91,8 +95,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_entry_date"
-            android:layout_width="280dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintStart_toStartOf="@+id/tilValue"
             app:layout_constraintTop_toBottomOf="@+id/tilValue">
 
