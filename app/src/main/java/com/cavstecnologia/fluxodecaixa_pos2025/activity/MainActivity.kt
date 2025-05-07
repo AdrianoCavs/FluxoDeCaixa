@@ -1,5 +1,6 @@
 package com.cavstecnologia.fluxodecaixa_pos2025.activity
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -230,6 +231,7 @@ class MainActivity : AppCompatActivity() {
         else return true;
     }
 
+    @SuppressLint("DefaultLocale")
     private fun showDatePickerDialog() {
         val datePickerDialog = DatePickerDialog(this, {_, selectedYear, selectedMonth, selectedDay ->
             val date : String = String.format("%02d",selectedDay)+"/"+String.format("%02d",selectedMonth+1)+"/"+String.format("%02d", selectedYear);
